@@ -1,0 +1,4 @@
+- Pawn moves should be bit different.
+  - If there is an enemy right in front, either ally or enemy, front piece should not be available to take and there should be no available moves
+  - Except if there is an enemy diagnoly on either side that piece can be taken
+- Sliding pieces are available to move until hit a piece or out of bounds, and also capture enemy piece
