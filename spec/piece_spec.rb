@@ -175,7 +175,118 @@ describe Piece do
       b = Board.new
       rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
       BoardRender.new(b).render
+      expect(rook.available_moves.length).to eql(14)
+    end
+    it 'can capture a enemy piece but cannot move beyond it' do
+      b = Board.new
+      rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
+      enemy_piece = b[[0, 4]] = Pawn.new(:black, b, [0, 4])
+      BoardRender.new(b).render
+      expect(rook.available_moves).to include([0, 4])
+      expect(rook.available_moves).not_to include([0, 5])
       p rook.available_moves
+    end
+    it 'cannot move to and move beyond an ally piece' do
+      b = Board.new
+      rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
+      ally_piece = b[[0, 4]] = Pawn.new(:white, b, [0, 4])
+      BoardRender.new(b).render
+      expect(rook.available_moves).not_to include([0, 4])
+      expect(rook.available_moves).not_to include([0, 5])
+      p rook.available_moves
+    end
+  end
+
+  describe "Bishop #available_moves do " do
+    it 'can slide diagnoly to 4 sides if there is no pieces are blocking' do 
+      b = Board.new
+      bishop = b[[3, 3]] = Bishop.new(:white, b, [3, 3])
+      BoardRender.new(b).render
+      p bishop.available_moves
+      expect(bishop.available_moves.length).to eql(13)
+    end
+    it 'can capture a enemy piece but cannot move beyond it' do
+      b = Board.new
+      bishop = b[[3, 0]] = Bishop.new(:white, b, [3, 0])
+      enemy_piece = b[[5, 2]] = Pawn.new(:black, b, [5, 2])
+      BoardRender.new(b).render
+      expect(bishop.available_moves).to include([5, 2])
+      expect(bishop.available_moves).not_to include([6, 3])
+      p bishop.available_moves
+    end
+    it 'cannot move to and move beyond an ally piece' do
+      b = Board.new
+      bishop = b[[4, 4]] = Bishop.new(:white, b, [4, 4])
+      ally_piece = b[[6, 6]] = Pawn.new(:white, b, [6, 6])
+      BoardRender.new(b).render
+      expect(bishop.available_moves).not_to include([6, 6])
+      expect(bishop.available_moves).not_to include([7, 7])
+      p bishop.available_moves
+    end
+  end
+  describe "Rook #available_moves" do 
+    it 'can slide horizontaly and verticaly if no piece is blocking' do 
+      b = Board.new
+      rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
+      BoardRender.new(b).render
+      expect(rook.available_moves.length).to eql(14)
+    end
+    it 'can capture a enemy piece but cannot move beyond it' do
+      b = Board.new
+      rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
+      enemy_piece = b[[0, 4]] = Pawn.new(:black, b, [0, 4])
+      BoardRender.new(b).render
+      expect(rook.available_moves).to include([0, 4])
+      expect(rook.available_moves).not_to include([0, 5])
+      p rook.available_moves
+    end
+    it 'cannot move to and move beyond an ally piece' do
+      b = Board.new
+      rook = b[[0, 0]] = Rook.new(:white, b, [0, 0])
+      ally_piece = b[[0, 4]] = Pawn.new(:white, b, [0, 4])
+      BoardRender.new(b).render
+      expect(rook.available_moves).not_to include([0, 4])
+      expect(rook.available_moves).not_to include([0, 5])
+      p rook.available_moves
+    end
+  end
+
+  describe "Queen #available_moves do " do
+    it 'can slide diagnoly to 6 sides if there is no pieces are blocking' do 
+      b = Board.new
+      queen = b[[3, 3]] = Queen.new(:white, b, [3, 3])
+      BoardRender.new(b).render
+      puts "Queens available moves"
+      p queen.available_moves
+      expect(p queen.available_moves.length).to eql(27)
+      queen.available_moves.each do |move|
+        b[move] = 'x'
+      end
+      BoardRender.new(b).render
+    end
+    it 'can capture enemy piece but cannot move beyond it' do 
+      b = Board.new
+      queen = b[[3, 3]] = Queen.new(:white, b, [3, 3])
+      enemy_piece = b[[5, 3]] = Knight.new(:black , b, [5, 3])
+      puts "Queens available moves"
+      p queen.available_moves
+      expect(p queen.available_moves.length).to eql(25)
+      queen.available_moves.each do |move|
+        b[move] = 'x' if b[move].nil?
+      end
+      BoardRender.new(b).render
+    end
+    it 'cannot move to or beyond an ally piece' do 
+      b = Board.new
+      queen = b[[3, 3]] = Queen.new(:white, b, [3, 3])
+      enemy_piece = b[[5, 3]] = Knight.new(:white, b, [5, 3])
+      puts "Queens available moves"
+      p queen.available_moves
+      expect(p queen.available_moves.length).to eql(24)
+      queen.available_moves.each do |move|
+        b[move] = 'x' if b[move].nil?
+      end
+      BoardRender.new(b).render
     end
   end
 end
