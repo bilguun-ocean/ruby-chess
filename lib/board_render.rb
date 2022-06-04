@@ -13,4 +13,6 @@ class BoardRender
       puts ''
     end
   end
+
+  # add a render for possible move square? using a clone? 
 end

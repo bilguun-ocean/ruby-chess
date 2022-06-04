@@ -46,4 +46,19 @@ class Board
   def empty?(location)
     self[location].nil?
   end
+
+  def move_piece(start_pos, end_pos)
+    # the start_pos could be empty
+    if self[start_pos].nil? || !in_range?(start_pos)
+      puts "#{start_pos} is an empty square"
+      return
+    end
+    # if the available moves of a start_pos,
+    if self[start_pos].available_moves.include?(end_pos)
+      self[start_pos], self[end_pos] = nil, self[start_pos]
+    else
+      puts "#{end_pos} is not in the available moves"
+    end
+    # includes end_pos then can move there
+  end
 end
