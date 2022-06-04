@@ -8,18 +8,18 @@ class Board
     board = self.new
     (0..7).each do |i|
       board[[1, i]] = Pawn.new(:black, board, [1, i])
-      board[[6, i]] = Pawn.new(:white, board, [1, i])
+      board[[6, i]] = Pawn.new(:white, board, [6, i])
     end
     [0, 7].each do |i|
-      color = (i == 1 ? :black : :white)
+      color = (i == 0 ? :black : :white)
       board[[i, 0]] = Rook.new(color, board, [i, 0])
-      board[[i, 1]] = Knight.new(color, board, [i, 0])
-      board[[i, 2]] = Bishop.new(color, board, [i, 0])
-      board[[i, 3]] = Queen.new(color, board, [i, 0])
-      board[[i, 4]] = King.new(color, board, [i, 0])
-      board[[i, 5]] = Bishop.new(color, board, [i, 0])
-      board[[i, 6]] = Knight.new(color, board, [i, 0])
-      board[[i, 7]] = Rook.new(color, board, [i, 0])
+      board[[i, 1]] = Knight.new(color, board, [i, 1])
+      board[[i, 2]] = Bishop.new(color, board, [i, 2])
+      board[[i, 3]] = Queen.new(color, board, [i, 3])
+      board[[i, 4]] = King.new(color, board, [i, 4])
+      board[[i, 5]] = Bishop.new(color, board, [i, 5])
+      board[[i, 6]] = Knight.new(color, board, [i, 6])
+      board[[i, 7]] = Rook.new(color, board, [i, 7])
     end
     board
   end
@@ -48,6 +48,7 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
+    # move_piece should update the piece's internal location!!!!
     # the start_pos could be empty
     if self[start_pos].nil? || !in_range?(start_pos)
       puts "#{start_pos} is an empty square"
@@ -60,5 +61,11 @@ class Board
       puts "#{end_pos} is not in the available moves"
     end
     # includes end_pos then can move there
+  end
+
+  def in_check?(color)
+    # the player is in check if current position of the king
+    # king = 
+    # is in any available moves of the enemy piece
   end
 end
