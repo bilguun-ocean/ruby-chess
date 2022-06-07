@@ -16,7 +16,10 @@ require_relative 'lib/player'
 #   - forces user to move out of check or block the check
 # x. Make it possible to save a game during each turn 
 
-b = Board.new
-king = b[[0, 0]] = King.new(:black, b, [0, 0]) 
-b[[3, 0]] = Rook.new(:white, b, [3, 0])
-p king.safe_moves
+game = Game.new(
+  Player.new(:white, "Bilguun"),
+  Player.new(:black, "Dulguun"),
+  Board.start_chess,
+  BoardRender
+)
+game.start_game

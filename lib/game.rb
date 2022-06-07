@@ -17,7 +17,7 @@ class Game
 
   def game_over?
     # change this to later be over when in check_mate
-    false
+    board.checkmate?(:white) || board.checkmate?(:black)
   end
 
   def start_game
@@ -28,7 +28,12 @@ class Game
       make_turn
       switch_player
     end
+    puts "CHECKMATE!"
   end
+
+  # TO DO
+  # * Allow user to choose another piece to move
+  # * Allow user to save the current game
 
   # could make this method into smaller method
   def make_turn
@@ -37,6 +42,7 @@ class Game
     loop do 
       print 'Choose a piece: '
       piece_loc = gets.chomp.split.map &:to_i
+      next unless piece_loc.is_a?(Array) && piece_loc.all? {|elm| elm.is_a?(Integer)} && piece_loc.length == 2
       if !board.empty?(piece_loc) && board[piece_loc].color == current_player.color
         piece = board[piece_loc]
         puts "Chosen piece #{piece}"
@@ -48,12 +54,10 @@ class Game
     loop do 
       print 'Choose a move: '
       move = gets.chomp.split.map &:to_i
-      p move
-      p piece.location
-      p piece.available_moves
       break if piece.available_moves.include?(move)
 
       puts 'Invalid move'
+      puts "Available moves for this #{piece.to_s} are :#{piece.safe_moves}"
     end
     # execute the move
     board[move] = piece
@@ -61,4 +65,5 @@ class Game
     piece.location = move
     # change current_player
   end
+
 end
