@@ -10,10 +10,13 @@ require_relative 'lib/player'
 # 2. Write tests for rest of the stepable ✅
 # 3. Write tests for the slideables  ✅
 # 4. Make it possible for the piece to move ✅
-# 5. Make a #check?
-# 6. Make a #checkmate?
+# 5. Make a #check? ✅
+# 6. Make a #checkmate? ✅
 # 7. Make #safe_moves method that 
-#   - forces user to not get into check or get out of check
+#   - forces user to move out of check or block the check
+# x. Make it possible to save a game during each turn 
 
-game = Game.new(Player.new(:white, 'Jack'), Player.new(:black, 'Sparrow'), Board.start_chess, BoardRender)
-game.start_game
+b = Board.new
+king = b[[0, 0]] = King.new(:black, b, [0, 0]) 
+b[[3, 0]] = Rook.new(:white, b, [3, 0])
+p king.safe_moves

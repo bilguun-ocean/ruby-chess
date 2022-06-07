@@ -47,6 +47,18 @@ class Board
     self[location].nil?
   end
 
+
+  # returns the pieces that are currently on the board
+  def pieces
+    pieces = []
+    for row in 0..7 
+      for col in 0..7
+        pieces << self[[row, col]] unless self[[row, col]].nil?
+      end
+    end
+    pieces
+  end
+
   def move_piece(start_pos, end_pos)
     # move_piece should update the piece's internal location!!!!
     # the start_pos could be empty
@@ -55,17 +67,46 @@ class Board
       return
     end
     # if the available moves of a start_pos,
-    if self[start_pos].available_moves.include?(end_pos)
-      self[start_pos], self[end_pos] = nil, self[start_pos]
-    else
+    if !self[start_pos].available_moves.include?(end_pos)
       puts "#{end_pos} is not in the available moves"
+      return
     end
+    self[start_pos], self[end_pos] = nil, self[start_pos]
     # includes end_pos then can move there
   end
 
+  def move_piece!(start_pos, end_pos)
+    # also update the internal location!
+    self[start_pos], self[end_pos] = nil, self[start_pos]
+    self[end_pos].location = end_pos
+  end
+
   def in_check?(color)
+    enemy_pieces = pieces.reject { |piece| piece.color == color }
+    king_location = pieces
+                    .find { |piece| piece.color == color && piece.is_a?(King) }
+                    .location
     # the player is in check if current position of the king
-    # king = 
-    # is in any available moves of the enemy piece
+    enemy_pieces.each do |piece|
+      return true if piece.available_moves.include?(king_location)
+    end
+    false
+  end
+
+  def checkmate?(color)
+    return false unless in_check?(color)
+    # if all ally piece doesn't have a move that gets the king out of a check
+    # then its checkmate
+    ally_piece = pieces.select {|piece| piece.color == color }
+    ally_piece.all? {|piece| piece.safe_moves.empty? }
+  end
+
+  def dup
+    new_board = Board.new
+    pieces.each do |piece|
+      new_piece = piece.class.new(piece.color, new_board, piece.location)
+      new_board[new_piece.location] = new_piece
+    end
+    new_board
   end
 end

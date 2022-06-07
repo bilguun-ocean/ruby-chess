@@ -78,4 +78,38 @@ describe Board do
       BoardRender.new(b).render
     end
   end
+  describe '#in_check?' do
+    it 'returns true if king is in check' do 
+      b = Board.new
+      king = b[[0, 0]] = King.new(:black, b, [0, 0])
+      enemy_rook = b[[3, 0]] = Rook.new(:white, b, [3, 0])
+      BoardRender.new(b).render
+      expect(b.in_check?(:black)).to eql(true)
+    end
+    it 'returns false if king is not in check' do 
+      b = Board.new
+      king = b[[0, 0]] = King.new(:black, b, [0, 0])
+      enemy_rook = b[[3, 0]] = Rook.new(:black, b, [3, 0])
+      BoardRender.new(b).render
+      expect(b.in_check?(:black)).to eql(false)
+    end
+  end
+  describe '#checkmate?' do 
+    it 'returns true if king is in checkmate' do 
+      b = Board.new
+      king = b[[0, 0]] = King.new(:black, b, [0, 0])
+      e_king = b[[6, 6]] = King.new(:white, b, [6, 6])
+      enemy_rook1 = b[[3, 0]] = Rook.new(:white, b, [3, 0])
+      enemy_rook2 = b[[3, 1]] = Rook.new(:white, b, [3, 1])
+      BoardRender.new(b).render
+      expect(b.checkmate?(:black)).to eql(true)
+    end
+    it 'returns false if king is not in checkmate' do
+      b = Board.new
+      king = b[[0, 0]] = King.new(:black, b, [0, 0])
+      enemy_rook = b[[3, 0]] = Rook.new(:white, b, [3, 0])
+      BoardRender.new(b).render
+      expect(b.checkmate?(:black)).to eql(false)
+    end
+  end
 end
