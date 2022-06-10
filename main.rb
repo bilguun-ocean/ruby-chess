@@ -22,4 +22,5 @@ game = Game.new(
   Board.start_chess,
   BoardRender
 )
-game.start_game
+# game.save_current('test')
+game.initialize_game
