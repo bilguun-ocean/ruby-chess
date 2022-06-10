@@ -54,10 +54,19 @@ class Game
       render.render
       puts "#{current_player.color}'s turn"
       make_turn
+      declare_check if board.in_check?(:white) || board.in_check?(:black)
       switch_player
     end
     render.render
     puts "CHECKMATE!"
+  end
+
+  def declare_check
+    if board.in_check?(:black)
+      puts "Black is in CHECK!"
+    else
+      puts "White is in CHECK!"
+    end
   end
 
   def initialize_game
